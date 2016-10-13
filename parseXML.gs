@@ -28,13 +28,23 @@ function parseFile() {
         var headers = []; //Initialize the arrays
         var allValues = [];
         var values = [];
-        for(var i=0; i < entries.length; i++) { //For each entry
+        
+        var testing = entries[0].getChildren().length;
+        
+        //Limit the number of values processed to 300
+        if((entries.length/entries[0].length) > 4000) {
+          var totalEntries = 4000;
+        } else {
+          var totalEntries = entries.length;
+        }
+        
+        for(var i=0; i < totalEntries; i++) { //For each entry
           if(entries[i].getName() == player) { //If the it is the first record, put it in the header array
             headers.push(entries[i].getChildText("F"));
           }
           values.push(entries[i].getChildText("A")); //Put the values is the values array
           
-          if(i == entries.length-1) { //If it is not the first value, put them into the allValues array
+          if(i == totalEntries-1) { //If it is not the first value, put them into the allValues array
             allValues.push(values);
             values = [];
           } else if(entries[i].getName() != entries[i+1].getName()) {
@@ -71,9 +81,6 @@ function parseFile() {
       //Increment the file count and set the file name to PARSED
       count++;
       txtFile.setName(txtFileName + "-PARSED");
-    }
-    
-    
+    } 
   }
-  
 }
